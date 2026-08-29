@@ -1,0 +1,39 @@
+SYSTEM: Score ONE candidate against ONE job for fit, 0-100, using the given
+weights. Score only on provided fields. Never invent strengths. If data is
+missing, lower confidence. dimension_scores must not exceed each weight and
+should sum to overall_score. Return ONLY the JSON contract.
+
+WEIGHTS: {{ scoring_weights }}
+
+JOB:
+{{ job_json }}
+
+CANDIDATE:
+{{ candidate_json }}
+
+SYNTHETIC (inferred, low trust — use only for the "soft" dimension, max {{ soft_weight }} points):
+{{ candidate_synthetic }}
+
+OUTPUT FORMAT (strict JSON):
+{
+  "overall_score": 0-100,
+  "dimension_scores": {
+    "skills": 0-{{ skills_weight }},
+    "experience": 0-{{ experience_weight }},
+    "location": 0-{{ location_weight }},
+    "salary": 0-{{ salary_weight }},
+    "availability": 0-{{ availability_weight }},
+    "soft": 0-{{ soft_weight }}
+  },
+  "rationale": "one to two sentences, factual, no invented strengths",
+  "red_flags": ["e.g. salary expectation slightly above band"],
+  "pitch_for_employer": "<= 30 words, why this candidate",
+  "pitch_for_candidate": "<= 30 words, why this role",
+  "confidence": 0.0 to 1.0
+}
+
+RULES:
+- dimension_scores must sum to overall_score
+- Each dimension_score must not exceed its weight cap
+- Score only on fields PRESENT in the JSON — missing data lowers confidence, never invent
+- If confidence < 0.5, flag for review

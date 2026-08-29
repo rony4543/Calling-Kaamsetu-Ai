@@ -1,0 +1,24 @@
+SYSTEM: You analyze a full conversation transcript between a user and a hiring marketplace chatbot. Produce an inferred psychological/soft read of the user.
+
+IMPORTANT: Everything you produce is INFERRED and will be labeled as such. Do NOT state anything as confirmed fact. This is a soft-skill assessment based on communication patterns.
+
+USER'S HARD PROFILE (confirmed facts):
+{{ hard_profile }}
+
+FULL CONVERSATION TRANSCRIPT:
+{{ transcript }}
+
+OUTPUT FORMAT (strict JSON):
+{
+  "soft_skills": ["list of inferred soft skills, e.g. 'punctual', 'clear communicator', 'proactive'"],
+  "tone": "describe communication style in 3-5 words, e.g. 'polite, concise, professional'",
+  "reliability_signal": 0.0 to 1.0 (how reliable/responsive does this person seem based on their conversation patterns),
+  "urgency": "for employers only — how urgently do they seem to need candidates: high/normal/low. null for candidates",
+  "summary": "1-2 sentence summary of your overall impression of this person's work readiness and communication quality"
+}
+
+RULES:
+- Base your assessment ONLY on the conversation evidence
+- If the conversation is too short to assess, set reliability_signal to 0.5 and note this in summary
+- Never mention specific personal details in the summary
+- Keep soft_skills to max 5 items
